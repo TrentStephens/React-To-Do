@@ -10,36 +10,41 @@
 			 { description: 'Walk the cat', isCompleted: true},
 			 { description: 'Throw the dishes away', isCompleted: false},
 			 { description: 'Buy new dishes', isCompleted: false}
-			
+
 			 ],
 			 newTodoDescription: ' '
 		 };
 	 }
-	 
+
 	 	handleChange(e) {
 			this.setState ({ newTodoDescription: e.target.value})
 		}
-	 
+
 	 	handleSubmit(e) {
 			e.preventDefault();
 				if (!this.state.newTodoDescription) { return }
 				const newTodo = {description: this.state.newTodoDescription, isCompleted: false};
 				this.setState ({ todos: [...this.state.todos, newTodo], newTodoDescription: ' '});
 		}
-	 
+
 	 toggleComplete(index){
 	 	const todos = this.state.todos.slice();
 		const todo = todos [index];
 		 todo.isCompleted = todo.isCompleted ? false : true;
 		 this.setState ({todos: todos });
 	 }
-	 
+
+   deleteTodo(index){
+     const toDos = this.state.todos.filter((todo,i) => i!==index);
+     this.setState({todos:toDos});
+   }
+
    render() {
      return (
        <div className="App">
         <ul>
 	   { this.state.todos.map( (todo, index) =>
-			   <ToDo key={ index } description={ todo.description } isCompleted= { todo.isComplete } toggleComplete={ () => this.toggleComplete(index) } />
+			   <ToDo key={ index } index={index} description={ todo.description } isCompleted= { todo.isComplete } toggleComplete={ () => this.toggleComplete(index) } deleteItem={ () => this.deleteTodo(index)} />
 	  ) }
         </ul>
 	   	<form onSubmit ={ (e) => this.handleSubmit(e)} >
